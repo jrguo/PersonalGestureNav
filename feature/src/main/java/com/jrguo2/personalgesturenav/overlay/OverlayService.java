@@ -16,6 +16,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.jrguo2.personalgesturenav.view.AreaView;
+
 public class OverlayService extends Service implements OnTouchListener, OnClickListener {
 
     private View topLeftView;
@@ -26,7 +28,9 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
     private int originalXPos;
     private int originalYPos;
     private boolean moving;
-    private WindowManager wm;
+
+    private WindowManager windowsManager;
+    private AreaView testView;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,50 +41,36 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
     public void onCreate() {
         super.onCreate();
 
-        wm = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        //Let's create our overlay for the navigation gestures
 
-        overlayedButton = new Button(this);
-        overlayedButton.setText("Overlay button");
-        overlayedButton.setOnTouchListener(this);
-        overlayedButton.setBackgroundColor(Color.BLACK);
-        overlayedButton.setBackgroundColor(0x55fe4444);
-        overlayedButton.setOnClickListener(this);
-
-        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
+        //Create parameters for the layout
+        WindowManager.LayoutParams p = new WindowManager.LayoutParams(
+                150, 150,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                PixelFormat.TRANSLUCENT);
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        ,
+                PixelFormat.TRANSPARENT);
 
-        params.gravity = Gravity.LEFT | Gravity.TOP;
-        params.x = 0;
-        params.y = 0;
-        wm.addView(overlayedButton, params);
 
-        topLeftView = new View(this);
-        WindowManager.LayoutParams topLeftParams = new WindowManager.LayoutParams(
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.MATCH_PARENT,
-                WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                PixelFormat.TRANSLUCENT);
+        p.gravity = Gravity.LEFT | Gravity.BOTTOM;
+        p.x = 500;
+        p.y = 0;
 
-        topLeftParams.gravity = Gravity.LEFT | Gravity.TOP;
-        topLeftParams.x = 0;
-        topLeftParams.y = 0;
-        topLeftParams.width = 0;
-        topLeftParams.height = 0;
-        wm.addView(topLeftView, topLeftParams);
+        windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
+        testView = new AreaView(this);
+        testView.setOnClickListener(this);
+        windowsManager.addView(testView, p);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         if (overlayedButton != null) {
-            wm.removeView(overlayedButton);
-            wm.removeView(topLeftView);
+            windowsManager.removeView(testView);
+            //windowsManager.removeView(overlayedButton);
+            //windowsManager.removeView(topLeftView);
             overlayedButton = null;
             topLeftView = null;
         }
@@ -126,7 +116,7 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
             params.x = newX - (topLeftLocationOnScreen[0]);
             params.y = newY - (topLeftLocationOnScreen[1]);
 
-            wm.updateViewLayout(overlayedButton, params);
+            windowsManager.updateViewLayout(overlayedButton, params);
             moving = true;
         } else if (event.getAction() == MotionEvent.ACTION_UP) {
             if (moving) {
