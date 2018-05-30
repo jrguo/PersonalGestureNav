@@ -16,6 +16,8 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.jrguo2.personalgesturenav.gestures.NavGestureListener;
+import com.jrguo2.personalgesturenav.listeners.TouchListener;
 import com.jrguo2.personalgesturenav.view.AreaView;
 
 public class OverlayService extends Service implements OnTouchListener, OnClickListener {
@@ -45,7 +47,7 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
 
         //Create parameters for the layout
         WindowManager.LayoutParams p = new WindowManager.LayoutParams(
-                150, 150,
+                600, 50,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
@@ -53,14 +55,17 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
                 PixelFormat.TRANSPARENT);
 
 
-        p.gravity = Gravity.LEFT | Gravity.BOTTOM;
-        p.x = 500;
+        p.gravity = Gravity.CENTER | Gravity.BOTTOM;
+        p.x = 0;
         p.y = 0;
 
         windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         testView = new AreaView(this);
-        testView.setOnClickListener(this);
+        //testView.setOnClickListener(this);
+        testView.setOnTouchListener(new TouchListener());
+
+        //Add view to the manager
         windowsManager.addView(testView, p);
     }
 
@@ -69,8 +74,7 @@ public class OverlayService extends Service implements OnTouchListener, OnClickL
         super.onDestroy();
         if (overlayedButton != null) {
             windowsManager.removeView(testView);
-            //windowsManager.removeView(overlayedButton);
-            //windowsManager.removeView(topLeftView);
+            testView = null;
             overlayedButton = null;
             topLeftView = null;
         }
