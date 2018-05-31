@@ -1,10 +1,12 @@
 package com.jrguo2.personalgesturenav.listeners;
 
+import android.accessibilityservice.AccessibilityService;
 import android.view.MotionEvent;
 import android.view.View;
 
 import com.jrguo2.personalgesturenav.gestures.GesturesTypes;
 import com.jrguo2.personalgesturenav.gestures.NavGestureListener;
+import com.jrguo2.personalgesturenav.overlay.OverlayService;
 
 public class TouchListener implements View.OnTouchListener {
 
@@ -12,14 +14,15 @@ public class TouchListener implements View.OnTouchListener {
     private float prevX, prevY;
     private long prevTime;
     private NavGestureListener gestureHandler;
+    private OverlayService accessibilityService;
 
-    public TouchListener(){
+    public TouchListener(OverlayService accessibilityService){
         prevX = 0f;
         prevY = 0f;
         prevTime = 0;
 
-        gestureHandler = new NavGestureListener();
-
+        this.accessibilityService = accessibilityService;
+        gestureHandler = new NavGestureListener(accessibilityService);
     }
 
     @Override
@@ -33,7 +36,7 @@ public class TouchListener implements View.OnTouchListener {
                 prevTime = System.currentTimeMillis();
                 return true;
             }
-            case MotionEvent.ACTION_UP:{
+            case MotionEvent.ACTION_UP: {
                 float currX = event.getX();
                 float currY = event.getY();
                 float dur = System.currentTimeMillis() - prevTime;
