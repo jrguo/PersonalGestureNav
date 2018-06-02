@@ -7,24 +7,28 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.view.View;
 
+import com.jrguo2.personalgesturenav.utils.Configs;
+
 public class AreaView extends View {
 
-    Paint paint;
-    int xOffset;
-    int yOffset;
-    int dir;
+    private Paint paint;
+    private boolean show;
+    private Color pillColor;
+    private Color outlineColor;
+    private float height;
+    private float roundRadius;
 
     public AreaView(Context context) {
         super(context);
 
         paint = new Paint();
+        show = true;
 
-        xOffset = 50;
-        yOffset = 0;
+        pillColor = Color.valueOf(0f, 0f, 0f, 0.35f);
+        outlineColor = Color.valueOf(1f, 1f, 1f, .75f);
 
-        dir = 1;
-
-
+        height = Configs.getFloat("navAreaHeight", 40f);
+        roundRadius = Configs.getFloat("navAreaRadius", 50f);
     }
 
     @Override
@@ -32,14 +36,25 @@ public class AreaView extends View {
         //Clear the screen
         canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);
 
-        xOffset += dir;
-        yOffset += dir;
+        if (show) {
+            paint.setStyle(Paint.Style.FILL);
+            paint.setColor(pillColor.toArgb());
+            canvas.drawRoundRect(0, 0, canvas.getWidth(), height, roundRadius, roundRadius, paint);
 
-        if(xOffset < 0 || xOffset > 700){
-            dir = -dir;
+            paint.setStyle(Paint.Style.STROKE);
+            paint.setStrokeWidth(1);
+            paint.setColor(pillColor.toArgb());
+            canvas.drawRoundRect(0, 0, canvas.getWidth(), height, roundRadius, roundRadius, paint);
         }
+    }
 
-        paint.setColor(Color.BLACK);
-        canvas.drawRoundRect(0, 0, canvas.getWidth(), canvas.getHeight(), canvas.getHeight(), canvas.getHeight(), paint);
+    public void showArea(){
+        this.show = true;
+        this.invalidate();
+    }
+
+    public void hide(){
+        this.show = false;
+        this.invalidate();
     }
 }
