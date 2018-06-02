@@ -1,27 +1,17 @@
 package com.jrguo2.personalgesturenav.feature;
 
-import android.Manifest;
-import android.accessibilityservice.AccessibilityServiceInfo;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.widget.Toast;
 
 import com.jrguo2.personalgesturenav.overlay.OverlayService;
-
-import java.util.List;
-
-import static android.provider.Settings.Secure.ACCESSIBILITY_ENABLED;
+import com.jrguo2.personalgesturenav.settings.SettingsActivity;
 
 
 public class MainActivity extends Activity {
@@ -107,6 +97,9 @@ public class MainActivity extends Activity {
         Intent svc = new Intent(this, OverlayService.class);
         startService(svc);
         finish();
+
+        Intent menuIntent = new Intent(this, SettingsActivity.class);
+        startActivity(menuIntent);
     }
 
     @Override

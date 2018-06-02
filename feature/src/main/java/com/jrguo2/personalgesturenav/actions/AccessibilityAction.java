@@ -1,5 +1,7 @@
 package com.jrguo2.personalgesturenav.actions;
 
+import android.util.Log;
+
 import com.jrguo2.personalgesturenav.overlay.OverlayService;
 
 public class AccessibilityAction extends Action {
@@ -20,8 +22,10 @@ public class AccessibilityAction extends Action {
             return false;
 
         this.vibrate();
+        boolean result = navService.performGlobalAction(action);
+        Log.i("Action", "Performing action: " + action + "\t" + result);
 
-        return navService.performGlobalAction(action);
+        return result;
 
     }
 }

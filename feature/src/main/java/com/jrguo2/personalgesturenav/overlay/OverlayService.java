@@ -12,8 +12,11 @@ import android.provider.Settings;
 import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.RelativeLayout;
 
 import com.jrguo2.personalgesturenav.feature.R;
 import com.jrguo2.personalgesturenav.listeners.TouchListener;
@@ -53,6 +56,14 @@ public class OverlayService extends AccessibilityService {
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Configs.SHARED_PREFERENCES_EDITOR = Configs.SHARED_PREFERENCE.edit();
 
+        //Configs.SHARED_PREFERENCES_EDITOR.clear().commit();
+
+        createAndAddNavArea();
+
+        Configs.OVERLAY_SERVICE = this;
+    }
+
+    private void createAndAddNavArea(){
         areaWidth = Configs.getInt("navAreaWidth", 650);
         areaHeight = Configs.getInt("navAreaHeight", 70);
 
@@ -75,13 +86,38 @@ public class OverlayService extends AccessibilityService {
         p.x = xOffset;
         p.y = yOffset;
 
-        windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        if(windowsManager == null)
+            windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
-        testView = new AreaView(this);
-        testView.setOnTouchListener(new TouchListener(this));
+        if(testView == null){
+            testView = new AreaView(this);
+            testView.setOnTouchListener(new TouchListener(this));
+        }
+
+        ViewGroup.LayoutParams params = testView.getLayoutParams();
+        if(params == null)
+            testView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        else{
+            params.height = areaHeight;
+            params.width = areaWidth;
+            testView.setLayoutParams(params);
+        }
 
         //Add view to the manager
+        try{
+            windowsManager.removeView(testView);
+        }
+        catch(Exception e){
+
+        }
         windowsManager.addView(testView, p);
+
+    }
+
+    public void updateParamters(){
+        createAndAddNavArea();
+        testView.updateParameters();
+        testView.showArea();
     }
 
     @Override
