@@ -7,14 +7,10 @@ import com.jrguo2.personalgesturenav.utils.Configs;
 
 public class LongSeekBarListener extends SeekerListener {
 
-    private long minValue;
-    private long maxValue;
     private long currValue;
 
-    public LongSeekBarListener(String prefix, TextView view, String keyValue, long minValue, long maxValue) {
-        super(prefix, view, keyValue);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
+    public LongSeekBarListener(String keyValue) {
+        super(keyValue);
 
         currValue = 0;
     }
@@ -26,8 +22,11 @@ public class LongSeekBarListener extends SeekerListener {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        currValue = (long)((progress * 1.0 / 100 * (maxValue - minValue)) + minValue);
-        textView.setText(this.prefix + ":\t" + currValue);
+        currValue = progress;
+        int width = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
+        int thumbPos = (int) ( width * (1.0 * (seekBar.getProgress() - seekBar.getMin()) / (seekBar.getMax() - seekBar.getMin())));
+        this.textDrawable.setOffsets(thumbPos, 0);
+        seekBar.setThumb(this.getDrawableFromString(Integer.toString((int) currValue)));
     }
 
     @Override

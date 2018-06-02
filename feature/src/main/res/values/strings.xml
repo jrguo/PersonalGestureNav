@@ -5,4 +5,16 @@
     <string name="title_activity_settings">Settings</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="navAreaWidthDescription">Controls how wide the navigation area is.
+        The pill will also fill the entire width of the navigation recognition area.</string>
+    <string name="navAreaHeightDescription">Controls the height of the navigation area. The entire sensor area is determined by this height.</string>
+    <string name="navBarHeightDescription">This controls the display height of the navigation bar.
+        This is only for display properties and does not affect the sensor area of the navigation area.</string>
+    <string name="navBarRadiusDescription">Changes how round the navigation bar appears. This is only for cosmetic purposes.</string>
+    <string name="navAreaXOffsetDescription">Changes how much the navigation area/bar is offset horizontally.
+        Normally this value should be 0 because we want the navigation area and bar to be centered.</string>
+    <string name="navAreaYOffsetDescription">Controls how much the navigation area/bar is offset from the bottom of the screen.
+        This is used to offset the changes from overscan hiding the navigation bar.</string>
+    <string name="vibrationIntensityDescription">Changes how intense the vibration is when an action is performed.</string>
+    <string name="vibrationLengthDescription">Changes the length of the vibration of when an action is performed.</string>
 </resources>

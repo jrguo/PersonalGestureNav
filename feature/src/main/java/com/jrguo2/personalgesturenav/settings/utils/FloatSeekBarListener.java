@@ -1,21 +1,15 @@
 package com.jrguo2.personalgesturenav.settings.utils;
 
 import android.widget.SeekBar;
-import android.widget.TextView;
 
 import com.jrguo2.personalgesturenav.utils.Configs;
 
 public class FloatSeekBarListener extends SeekerListener {
 
-    private float minValue;
-    private float maxValue;
     private float currValue;
 
-    public FloatSeekBarListener(String prefix, TextView view, String keyValue, float minValue, float maxValue) {
-        super(prefix, view, keyValue);
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-
+    public FloatSeekBarListener(String keyValue) {
+        super(keyValue);
         currValue = 0;
     }
 
@@ -26,8 +20,11 @@ public class FloatSeekBarListener extends SeekerListener {
 
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        currValue = (float)((progress * 1.0 / 100 * (maxValue - minValue)) + minValue);
-        textView.setText(this.prefix + ":\t" + currValue);
+        currValue = progress;
+        int width = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
+        int thumbPos = (int) ( width * (1.0 * (seekBar.getProgress() - seekBar.getMin()) / (seekBar.getMax() - seekBar.getMin())));
+        this.textDrawable.setOffsets(thumbPos, 0);
+        seekBar.setThumb(this.getDrawableFromString(Integer.toString((int) currValue)));
     }
 
     @Override

@@ -1,19 +1,17 @@
 package com.jrguo2.personalgesturenav.settings.utils;
 
+import android.graphics.drawable.Drawable;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
 public abstract class SeekerListener implements SeekBar.OnSeekBarChangeListener {
 
-    protected String prefix;
-    protected TextView textView;
     protected String keyValue;
+    protected TextDrawable textDrawable;
 
-    public SeekerListener(String prefix, TextView view, String keyValue){
-        this.prefix = prefix;
-        this.textView = view;
+    public SeekerListener(String keyValue){
         this.keyValue = keyValue;
-        textView.setText(prefix + ":\t");
+        textDrawable = new TextDrawable("");
     }
 
     public abstract void updateKeyValue();
@@ -23,4 +21,12 @@ public abstract class SeekerListener implements SeekBar.OnSeekBarChangeListener 
     }
 
 
+    public Drawable getDrawableFromString(String text){
+        textDrawable.setText(text);
+        return textDrawable;
+    }
+
+    public TextDrawable getTextDrawable() {
+         return this.textDrawable;
+    }
 }
