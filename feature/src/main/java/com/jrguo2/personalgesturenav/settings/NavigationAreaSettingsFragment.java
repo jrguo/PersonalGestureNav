@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jaredrummler.android.colorpicker.ColorPanelView;
 import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jrguo2.personalgesturenav.feature.R;
 import com.jrguo2.personalgesturenav.listeners.seekbarlisteners.SeekBarListener;
@@ -22,20 +24,22 @@ import com.jrguo2.personalgesturenav.utils.Util;
 
 import java.lang.reflect.Constructor;
 
-public class NavAreaSettings extends Fragment {
+public class NavigationAreaSettingsFragment extends Fragment {
 
     public String color;
     public static Fragment INSTANCE;
+    public static ColorPanelView pillColorPanel;
+    public static ColorPanelView outlineColorPanel;
 
     public static Fragment getInstance() {
         if(INSTANCE != null)
             return INSTANCE;
 
         Bundle bundle = new Bundle();
-        NavAreaSettings navAreaSettings = new NavAreaSettings();
-        navAreaSettings.setArguments(bundle);
-        INSTANCE = navAreaSettings;
-        return navAreaSettings;
+        NavigationAreaSettingsFragment navigationAreaSettingsFragment = new NavigationAreaSettingsFragment();
+        navigationAreaSettingsFragment.setArguments(bundle);
+        INSTANCE = navigationAreaSettingsFragment;
+        return navigationAreaSettingsFragment;
     }
 
     @Override
@@ -52,56 +56,95 @@ public class NavAreaSettings extends Fragment {
         LinearLayout layout = view.findViewById(R.id.baseLinearLayout);
 
         //Navbar area width
-        createAndAddSeekBarListener(layout , "Navigation Area Width", getString(R.string.navAreaWidthDescription),
+        createSeekBarChanger(layout , "Navigation Area Width", getString(R.string.navAreaWidthDescription),
                 0, 1024, "navAreaWidth", Configs.getInt("navAreaWidth", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Navbar area height
-        createAndAddSeekBarListener(layout, "Navigation Area Height", getString(R.string.navAreaHeightDescription),
+        createSeekBarChanger(layout, "Navigation Area Height", getString(R.string.navAreaHeightDescription),
                 0, 400, "navAreaHeight", Configs.getInt("navAreaHeight", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Nav-area x-offset
-        createAndAddSeekBarListener(layout, "Navigation Bar X-Offset", getString(R.string.navAreaXOffsetDescription),
+        createSeekBarChanger(layout, "Navigation Bar X-Offset", getString(R.string.navAreaXOffsetDescription),
                 0, 100, "navAreaXOffset", Configs.getInt("navAreaXOffset", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Nav-area y-offset
-        createAndAddSeekBarListener(layout, "Navigation Bar Y-Offset", getString(R.string.navAreaYOffsetDescription),
+        createSeekBarChanger(layout, "Navigation Bar Y-Offset", getString(R.string.navAreaYOffsetDescription),
                 0, 100, "navAreaYOffset", Configs.getInt("navAreaYOffset", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Navbar height
-        createAndAddSeekBarListener(layout, "Navigation Bar Render Height", getString(R.string.navBarHeightDescription),
+        createSeekBarChanger(layout, "Navigation Bar Render Height", getString(R.string.navBarHeightDescription),
                 0, 200, "navBarHeight", (int) Configs.getFloat("navBarHeight", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
 
         //Navbar radius
-        createAndAddSeekBarListener(layout, "Navigation Bar Radius", getString(R.string.navBarRadiusDescription),
+        createSeekBarChanger(layout, "Navigation Bar Radius", getString(R.string.navBarRadiusDescription),
                 0, 100, "navBarRadius", (int) Configs.getFloat("navBarRadius", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
 
         //Vibration intensity
-        createAndAddSeekBarListener(layout, "Vibration Intensity", getString(R.string.vibrationIntensityDescription),
+        createSeekBarChanger(layout, "Vibration Intensity", getString(R.string.vibrationIntensityDescription),
                 0, 100, "vib_amplitude", Configs.getInt("vib_amplitude", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Vibration length
-        createAndAddSeekBarListener(layout, "Vibration Length", getString(R.string.vibrationLengthDescription),
+        createSeekBarChanger(layout, "Vibration Length", getString(R.string.vibrationLengthDescription),
                 0, 500, "vib_duration", (int) Configs.getLong("vib_duration", 100),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.LongSeekBarListener");
 
-        ColorPickerDialog.newBuilder()
-                .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
-                .setAllowPresets(false)
-                .setDialogId(Configs.COLOR_PICKER_AREA)
-                .setColor(Color.BLACK)
-                .setShowAlphaSlider(true)
-                .show(getActivity());
+        //Fade duration length
+        createSeekBarChanger(layout, "Time Before Fade", getString(R.string.timeDurationBeforeFadeDescription),
+                0, 5000, "timeBeforeFadeDuration", (int) Configs.getLong("timeBeforeFadeDuration", 100),
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.LongSeekBarListener");
+
+        pillColorPanel = createColorChanger(layout, "Navigation Area Primary Color", getString(R.string.navAreaPrimaryColorDescription),
+                "pillColor", Configs.COLOR_PICKER_AREA);
+
+        outlineColorPanel = createColorChanger(layout, "Navigation Area Secondary Color", getString(R.string.navAreaSecondaryColorDescription),
+                "outlineColor", Configs.COLOR_PICKER_PILL);
+
+        createSeekBarChanger(layout, "Navigation Bar Thickness", getString(R.string.timeDurationBeforeFadeDescription),
+                0, 10, "navBarOutlineThickness", (int) Configs.getLong("navBarOutlineThickness", 5),
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
     }
 
-    private void createAndAddSeekBarListener(LinearLayout layout, String prefix, String description, int min, int max,
-                                             String keyValue, int currentValue, String className) {
+    private ColorPanelView createColorChanger(LinearLayout layout, String prefix, String description, String keyValue, final int id){
+        ViewGroup.LayoutParams lp = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, // Width of TextView
+                ViewGroup.LayoutParams.WRAP_CONTENT);
+
+        addTextArea(layout, keyValue, "TitleTextArea", prefix, R.style.SettingsSeekBarTitleTextAreaSettings, lp, 15,5,15,5);
+        addTextArea(layout, keyValue, "DescriptionTextArea", description, R.style.SettingsSeekBarDescriptionTextAreaSettings, lp, 30,5,15,15);
+
+        final ColorPanelView colorPanelView = new ColorPanelView(getActivity().getApplicationContext());
+        colorPanelView.setColor(Color.parseColor(Configs.getString(keyValue, "#FFFFFF")));
+        LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(200, ViewGroup.LayoutParams.WRAP_CONTENT);
+        p.gravity = Gravity.CENTER;
+        colorPanelView.setLayoutParams(p);
+        colorPanelView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ColorPickerDialog.newBuilder()
+                        .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                        .setAllowPresets(false)
+                        .setDialogId(id)
+                        .setColor(colorPanelView.getColor())
+                        .setShowAlphaSlider(true)
+                        .show(getActivity());
+            }
+        });
+
+        layout.addView(colorPanelView);
+        addDivider(layout, Util.dpToPixels(30));
+
+        return colorPanelView;
+    }
+
+    private void createSeekBarChanger(LinearLayout layout, String prefix, String description, int min, int max,
+                                      String keyValue, int currentValue, String className) {
         try{
             Class<?> classNameInstance = Class.forName(className);
             Constructor<?> cons = classNameInstance.getConstructor(String.class);
@@ -125,7 +168,7 @@ public class NavAreaSettings extends Fragment {
 
             int width =  displayMetrics.widthPixels - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
             int thumbPos = (int) (width * (1.0 * (seekBar.getProgress() - seekBar.getMin()) / (seekBar.getMax() - seekBar.getMin())));
-            seekBarListener.getTextDrawable().setOffsets(thumbPos, 0);
+            seekBarListener.getSeekBarTextDrawable().setOffsets(thumbPos, 0);
             seekBar.setThumb(seekBarListener.getDrawableFromString(Integer.toString(currentValue)));
         }
         catch(Exception e){

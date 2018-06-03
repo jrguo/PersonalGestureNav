@@ -11,7 +11,7 @@ import android.graphics.drawable.Drawable;
  * Code derived from:
  * https://stackoverflow.com/questions/3972445/how-to-put-text-in-a-drawable
  */
-public class TextDrawable extends Drawable {
+public class SeekBarTextDrawable extends Drawable {
 
     private String text;
     private final Paint paint;
@@ -19,18 +19,18 @@ public class TextDrawable extends Drawable {
     private int yOffset;
     private float radius;
 
-    public TextDrawable(String text) {
+    public SeekBarTextDrawable(String text) {
 
         this.text = text;
 
-        this.paint = new Paint();
+        this.paint = new Paint(Paint.LINEAR_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);
         paint.setColor(Color.WHITE);
         paint.setTextSize(22f);
         paint.setAntiAlias(true);
         paint.setFakeBoldText(true);
-        paint.setShadowLayer(6f, 0, 0, Color.BLACK);
+        paint.setShadowLayer(2f, 0, 0, Color.BLACK);
         paint.setStyle(Paint.Style.FILL);
-        paint.setTextAlign(Paint.Align.LEFT);
+        paint.setTextAlign(Paint.Align.CENTER);
 
         xOffset = 0;
         yOffset = 0;
@@ -58,10 +58,9 @@ public class TextDrawable extends Drawable {
     public void draw(Canvas canvas) {
         paint.setColor(Color.RED);
         canvas.drawCircle(xOffset - (radius / 2), yOffset + (radius / 2), radius, paint);
-
-        paint.setTextSize(20f);
+        paint.setTextSize(30f);
         paint.setColor(Color.BLACK);
-        canvas.drawText(text, xOffset - 30f, yOffset - 20f, paint);
+        canvas.drawText(text, xOffset - (radius / 2), yOffset - 20f, paint);
     }
 
     @Override

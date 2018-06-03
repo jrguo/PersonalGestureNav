@@ -12,7 +12,7 @@ public class MoveNavbar extends AccessibilityAction {
 
     @Override
     public boolean performAction() {
-        navService.moveNavbar(-200);
+        navService.moveNavBar(-200);
         Log.i("Navbar", "Trying to move the navbar");
         return true;
     }

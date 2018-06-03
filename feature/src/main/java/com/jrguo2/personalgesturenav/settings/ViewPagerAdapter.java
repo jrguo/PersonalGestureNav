@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
-    private String title[] = {"Nav Area", "Two", "Three"};
+    private String title[] = {"Navigation Area Settings", "Two", "Three"};
 
     public ViewPagerAdapter(FragmentManager manager) {
         super(manager);
@@ -15,7 +15,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0){
-            return NavAreaSettings.getInstance();
+            return NavigationAreaSettingsFragment.getInstance();
         }
         return TabFragment.getInstance(position);
     }

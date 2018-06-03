@@ -10,7 +10,7 @@ import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.jrguo2.personalgesturenav.feature.R;
 import com.jrguo2.personalgesturenav.utils.Configs;
 
-public class SettingsActivity extends AppCompatActivity implements ColorPickerDialogListener{
+public class CentralManagerActivity extends AppCompatActivity implements ColorPickerDialogListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -35,9 +35,13 @@ public class SettingsActivity extends AppCompatActivity implements ColorPickerDi
         Log.i("Color", Integer.toHexString(color));
         if(dialogId == Configs.COLOR_PICKER_AREA){
             Configs.setString("pillColor", "#" + Integer.toHexString(color));
+            Configs.OVERLAY_SERVICE.updateParameters();
+            NavigationAreaSettingsFragment.pillColorPanel.setColor(color);
         }
         if(dialogId == Configs.COLOR_PICKER_PILL){
             Configs.setString("outlineColor","#" +  Integer.toHexString(color));
+            Configs.OVERLAY_SERVICE.updateParameters();
+            NavigationAreaSettingsFragment.outlineColorPanel.setColor(color);
         }
     }
 

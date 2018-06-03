@@ -24,7 +24,7 @@ public class IntegerSeekBarListener extends SeekBarListener {
 
         int width = seekBar.getWidth() - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
         int thumbPos =(int) (width * (1.0 * (seekBar.getProgress() - seekBar.getMin()) / (seekBar.getMax() - seekBar.getMin())));
-        this.textDrawable.setOffsets(thumbPos, 0);
+        this.seekBarTextDrawable.setOffsets(thumbPos, 0);
         seekBar.setThumb(this.getDrawableFromString(Integer.toString((currValue))));
     }
 
@@ -36,6 +36,6 @@ public class IntegerSeekBarListener extends SeekBarListener {
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         updateKeyValue();
-        Configs.OVERLAY_SERVICE.updateParamters();
+        Configs.OVERLAY_SERVICE.updateParameters();
     }
 }

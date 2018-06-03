@@ -75,7 +75,4 @@ public class Configs {
         SHARED_PREFERENCES_EDITOR.putLong(key, val);
         SHARED_PREFERENCES_EDITOR.apply();
     }
-
-
-
 }

@@ -7,6 +7,7 @@ import android.view.View;
 import com.jrguo2.personalgesturenav.gestures.GesturesTypes;
 import com.jrguo2.personalgesturenav.gestures.NavGestureHandler;
 import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
+import com.jrguo2.personalgesturenav.utils.Configs;
 
 public class NavigationAreaTouchListener implements View.OnTouchListener {
 
@@ -22,10 +23,14 @@ public class NavigationAreaTouchListener implements View.OnTouchListener {
         prevY = 0f;
         prevTime = 0;
 
-        timeBeforeFade = 1000l;
+        timeBeforeFade = Configs.getLong("timeBeforeFadeDuration", 1000);
 
         this.accessibilityService = accessibilityService;
         gestureHandler = new NavGestureHandler(accessibilityService);
+    }
+
+    public void setTimeBeforeFade(long value){
+        this.timeBeforeFade = value;
     }
 
     @Override
@@ -39,7 +44,7 @@ public class NavigationAreaTouchListener implements View.OnTouchListener {
                 prevTime = System.currentTimeMillis();
 
                 //Make the pill visible
-                accessibilityService.testView.showArea();
+                accessibilityService.navigationAreaView.showArea();
 
                 return true;
             }
@@ -58,7 +63,7 @@ public class NavigationAreaTouchListener implements View.OnTouchListener {
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        accessibilityService.testView.hide();
+                        accessibilityService.navigationAreaView.hide();
                     }
                 }, timeBeforeFade);
                 return true;

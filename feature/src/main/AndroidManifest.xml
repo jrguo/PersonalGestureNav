@@ -19,7 +19,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".PermissionCheckActivity">
+        <activity android:name="com.jrguo2.personalgesturenav.permissions.PermissionCheckActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.jrguo2.personalgesturenav.settings.SettingsActivity">
+        <activity android:name="com.jrguo2.personalgesturenav.settings.CentralManagerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
             </intent-filter>

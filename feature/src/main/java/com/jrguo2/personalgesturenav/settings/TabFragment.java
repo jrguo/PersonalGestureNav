@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.jrguo2.personalgesturenav.feature.R;
 
+
 public class TabFragment extends Fragment {
 
     int position;

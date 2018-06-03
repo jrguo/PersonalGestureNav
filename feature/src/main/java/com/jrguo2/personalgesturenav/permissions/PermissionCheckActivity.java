@@ -1,4 +1,4 @@
-package com.jrguo2.personalgesturenav.feature;
+package com.jrguo2.personalgesturenav.permissions;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
-import com.jrguo2.personalgesturenav.settings.SettingsActivity;
+import com.jrguo2.personalgesturenav.settings.CentralManagerActivity;
 
 
 public class PermissionCheckActivity extends Activity {
@@ -98,7 +98,7 @@ public class PermissionCheckActivity extends Activity {
         startService(svc);
         finish();
 
-        Intent menuIntent = new Intent(this, SettingsActivity.class);
+        Intent menuIntent = new Intent(this, CentralManagerActivity.class);
         startActivity(menuIntent);
     }
 

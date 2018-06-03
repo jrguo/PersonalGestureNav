@@ -1,4 +1,4 @@
-package com.jrguo2.personalgesturenav.feature;
+package com.jrguo2.personalgesturenav.permissions;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

@@ -17,4 +17,8 @@
         This is used to offset the changes from overscan hiding the navigation bar.</string>
     <string name="vibrationIntensityDescription">Changes how intense the vibration is when an action is performed.</string>
     <string name="vibrationLengthDescription">Changes the length of the vibration of when an action is performed.</string>
+    <string name="timeDurationBeforeFadeDescription">The length of time before the navigation bar fades out.
+        This is in ms and is used to prevent screen burn in.</string>
+    <string name="navAreaPrimaryColorDescription">This determines the primary color of the navigation bar.</string>
+    <string name="navAreaSecondaryColorDescription">This determines the outline color of the navigation bar.</string>
 </resources>

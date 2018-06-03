@@ -3,16 +3,16 @@ package com.jrguo2.personalgesturenav.listeners.seekbarlisteners;
 import android.graphics.drawable.Drawable;
 import android.widget.SeekBar;
 
-import com.jrguo2.personalgesturenav.view.TextDrawable;
+import com.jrguo2.personalgesturenav.view.SeekBarTextDrawable;
 
 public abstract class SeekBarListener implements SeekBar.OnSeekBarChangeListener {
 
     protected String keyValue;
-    protected TextDrawable textDrawable;
+    protected SeekBarTextDrawable seekBarTextDrawable;
 
     public SeekBarListener(String keyValue){
         this.keyValue = keyValue;
-        textDrawable = new TextDrawable("");
+        seekBarTextDrawable = new SeekBarTextDrawable("");
     }
 
     public abstract void updateKeyValue();
@@ -23,11 +23,11 @@ public abstract class SeekBarListener implements SeekBar.OnSeekBarChangeListener
 
 
     public Drawable getDrawableFromString(String text){
-        textDrawable.setText(text);
-        return textDrawable;
+        seekBarTextDrawable.setText(text);
+        return seekBarTextDrawable;
     }
 
-    public TextDrawable getTextDrawable() {
-         return this.textDrawable;
+    public SeekBarTextDrawable getSeekBarTextDrawable() {
+         return this.seekBarTextDrawable;
     }
 }

@@ -19,22 +19,21 @@ import java.io.InputStreamReader;
 
 public class NavigationAreaService extends AccessibilityService {
 
+    //WM that holds our overlay
     private WindowManager windowsManager;
-    public NavigationAreaView testView;
-    public int xOffset;
-    public int yOffset;
-    public int areaWidth;
-    public int areaHeight;
 
-    @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.i("Accessibility", "this was triggered");
-    }
+    //View that we draw
+    public NavigationAreaView navigationAreaView;
 
-    @Override
-    public void onInterrupt() {
-        Log.i("Accessibility", "interrupt");
-    }
+    //On touch listener
+    private NavigationAreaTouchListener navigationAreaTouchListener;
+
+    //Nav area variables
+    public int navAreaXOffset;
+    public int navAreaYOffset;
+    public int navAreaWidth;
+    public int navAreaHeight;
+
 
     @Override
     public void onCreate() {
@@ -53,72 +52,73 @@ public class NavigationAreaService extends AccessibilityService {
     }
 
     private void createAndAddNavArea(){
-        areaWidth = Configs.getInt("navAreaWidth", 650);
-        areaHeight = Configs.getInt("navAreaHeight", 70);
-
-        Log.i("Overlay", "Created overlay service display");
+        navAreaWidth = Configs.getInt("navAreaWidth", 650);
+        navAreaHeight = Configs.getInt("navAreaHeight", 70);
+        navAreaXOffset = Configs.getInt("navAreaXOffset", 0);
+        navAreaYOffset = Configs.getInt("navAreaYOffset", 20);
 
         //Let's create our overlay for the navigation gestures
 
         //Create parameters for the layout
         WindowManager.LayoutParams p = new WindowManager.LayoutParams(
-                areaWidth, areaHeight,
+                navAreaWidth, navAreaHeight,
                 WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                         | WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL,
                 PixelFormat.TRANSPARENT);
 
-        xOffset = Configs.getInt("navAreaXOffset", 0);
-        yOffset = Configs.getInt("navAreaYOffset", 20);
-
         p.gravity = Gravity.CENTER | Gravity.BOTTOM;
-        p.x = xOffset;
-        p.y = yOffset;
+        p.x = navAreaXOffset;
+        p.y = navAreaYOffset;
 
         if(windowsManager == null)
             windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
-        if(testView == null){
-            testView = new NavigationAreaView(this);
-            testView.setOnTouchListener(new NavigationAreaTouchListener(this));
+        if(navigationAreaView == null){
+            navigationAreaView = new NavigationAreaView(this);
+            navigationAreaTouchListener = new NavigationAreaTouchListener(this);
+            navigationAreaView.setOnTouchListener(navigationAreaTouchListener);
         }
-
-        ViewGroup.LayoutParams params = testView.getLayoutParams();
-        if(params == null)
-            testView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         else{
-            params.height = areaHeight;
-            params.width = areaWidth;
-            testView.setLayoutParams(params);
+            long duration = Configs.getLong("timeBeforeFadeDuration", 1000);
+            navigationAreaTouchListener.setTimeBeforeFade(duration);
         }
 
-        //Add view to the manager
+        ViewGroup.LayoutParams params = navigationAreaView.getLayoutParams();
+
+        if(params == null) {
+            navigationAreaView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.MATCH_PARENT));
+        }
+
+        //Try to remove existing view
         try{
-            windowsManager.removeView(testView);
+            windowsManager.removeView(navigationAreaView);
         }
-        catch(Exception e){
+        catch(Exception e){ }
 
-        }
-        windowsManager.addView(testView, p);
+        //Add updated view to the WM
+        windowsManager.addView(navigationAreaView, p);
 
+        Log.i("Overlay", "Created overlay service display");
     }
 
-    public void updateParamters(){
+    public void updateParameters(){
         createAndAddNavArea();
-        testView.updateParameters();
-        testView.showArea();
+        navigationAreaView.updateParameters();
+        navigationAreaView.showArea();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (testView != null) {
-            windowsManager.removeView(testView);
-            testView = null;
+        if (navigationAreaView != null) {
+            windowsManager.removeView(navigationAreaView);
+            navigationAreaView = null;
         }
     }
 
-    public void moveNavbar(int amount){
+    public void moveNavBar(int amount){
         try{
 
             Process result = Runtime.getRuntime().exec("ls");
@@ -153,5 +153,16 @@ public class NavigationAreaService extends AccessibilityService {
             Log.v("Navbar", s);
         }
         return;
+    }
+
+
+    @Override
+    public void onAccessibilityEvent(AccessibilityEvent event) {
+        Log.i("Accessibility", "this was triggered");
+    }
+
+    @Override
+    public void onInterrupt() {
+        Log.i("Accessibility", "interrupt");
     }
 }
