@@ -10,11 +10,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 import com.jrguo2.personalgesturenav.settings.SettingsActivity;
 
 
-public class MainActivity extends Activity {
+public class PermissionCheckActivity extends Activity {
 
     public static int ACTION_ACCESSIBILITY_PERMISSIONS = 1234;
     public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE= 10101;
@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
     private boolean isAccessibilitySettingsOn(Context mContext) {
         String TAG = "Accessibility Service";
         int accessibilityEnabled = 0;
-        final String service = getPackageName() + "/" + OverlayService.class.getCanonicalName();
+        final String service = getPackageName() + "/" + NavigationAreaService.class.getCanonicalName();
         try {
             accessibilityEnabled = Settings.Secure.getInt(
                     mContext.getApplicationContext().getContentResolver(),
@@ -94,7 +94,7 @@ public class MainActivity extends Activity {
 
     public void launchOverlayService(){
         Log.i("Service", "Launching service");
-        Intent svc = new Intent(this, OverlayService.class);
+        Intent svc = new Intent(this, NavigationAreaService.class);
         startService(svc);
         finish();
 
@@ -106,13 +106,13 @@ public class MainActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if(requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
             if (Settings.canDrawOverlays(this)) {
-                Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PermissionCheckActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                 launchOverlayService();
             }
         }
         if (requestCode == ACTION_ACCESSIBILITY_PERMISSIONS){
             if(isAccessibilitySettingsOn(getApplicationContext())){
-                Toast.makeText(MainActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PermissionCheckActivity.this, "Permission Granted!", Toast.LENGTH_SHORT).show();
                 launchOverlayService();
                 return;
             }

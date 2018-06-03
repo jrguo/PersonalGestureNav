@@ -2,8 +2,12 @@ package com.jrguo2.personalgesturenav.actions;
 
 import android.accessibilityservice.AccessibilityService;
 
+import com.jrguo2.personalgesturenav.actions.defaultactions.AccessibilityAction;
+import com.jrguo2.personalgesturenav.actions.defaultactions.BlankAction;
+import com.jrguo2.personalgesturenav.actions.defaultactions.MostRecentAction;
+import com.jrguo2.personalgesturenav.actions.defaultactions.MoveNavbar;
 import com.jrguo2.personalgesturenav.gestures.GesturesTypes;
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +20,7 @@ public class ActionManager {
         actions = new HashMap<>();
     }
 
-    public void populateActionMapWithDefaults(OverlayService navService){
+    public void populateActionMapWithDefaults(NavigationAreaService navService){
         Action home = new AccessibilityAction(navService, AccessibilityService.GLOBAL_ACTION_HOME);
         Action back = new AccessibilityAction(navService, AccessibilityService.GLOBAL_ACTION_BACK);
         Action recent = new AccessibilityAction(navService, AccessibilityService.GLOBAL_ACTION_RECENTS);

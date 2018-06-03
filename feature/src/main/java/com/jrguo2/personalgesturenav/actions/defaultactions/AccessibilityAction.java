@@ -1,15 +1,16 @@
-package com.jrguo2.personalgesturenav.actions;
+package com.jrguo2.personalgesturenav.actions.defaultactions;
 
 import android.util.Log;
 
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.actions.Action;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 public class AccessibilityAction extends Action {
 
-    protected OverlayService navService;
+    protected NavigationAreaService navService;
     private int action;
 
-    public AccessibilityAction(OverlayService service, int action){
+    public AccessibilityAction(NavigationAreaService service, int action){
         this.navService = service;
         this.action = action;
 

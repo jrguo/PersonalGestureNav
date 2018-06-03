@@ -1,5 +1,6 @@
 package com.jrguo2.personalgesturenav.settings;
 
+import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -13,8 +14,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
 import com.jrguo2.personalgesturenav.feature.R;
-import com.jrguo2.personalgesturenav.settings.utils.SeekerListener;
+import com.jrguo2.personalgesturenav.listeners.seekbarlisteners.SeekBarListener;
 import com.jrguo2.personalgesturenav.utils.Configs;
 import com.jrguo2.personalgesturenav.utils.Util;
 
@@ -22,10 +24,17 @@ import java.lang.reflect.Constructor;
 
 public class NavAreaSettings extends Fragment {
 
+    public String color;
+    public static Fragment INSTANCE;
+
     public static Fragment getInstance() {
+        if(INSTANCE != null)
+            return INSTANCE;
+
         Bundle bundle = new Bundle();
         NavAreaSettings navAreaSettings = new NavAreaSettings();
         navAreaSettings.setArguments(bundle);
+        INSTANCE = navAreaSettings;
         return navAreaSettings;
     }
 
@@ -45,42 +54,50 @@ public class NavAreaSettings extends Fragment {
         //Navbar area width
         createAndAddSeekBarListener(layout , "Navigation Area Width", getString(R.string.navAreaWidthDescription),
                 0, 1024, "navAreaWidth", Configs.getInt("navAreaWidth", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.IntSeekerListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Navbar area height
         createAndAddSeekBarListener(layout, "Navigation Area Height", getString(R.string.navAreaHeightDescription),
                 0, 400, "navAreaHeight", Configs.getInt("navAreaHeight", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.IntSeekerListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Nav-area x-offset
         createAndAddSeekBarListener(layout, "Navigation Bar X-Offset", getString(R.string.navAreaXOffsetDescription),
                 0, 100, "navAreaXOffset", Configs.getInt("navAreaXOffset", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.IntSeekerListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Nav-area y-offset
         createAndAddSeekBarListener(layout, "Navigation Bar Y-Offset", getString(R.string.navAreaYOffsetDescription),
                 0, 100, "navAreaYOffset", Configs.getInt("navAreaYOffset", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.IntSeekerListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Navbar height
         createAndAddSeekBarListener(layout, "Navigation Bar Render Height", getString(R.string.navBarHeightDescription),
                 0, 200, "navBarHeight", (int) Configs.getFloat("navBarHeight", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.FloatSeekBarListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
 
         //Navbar radius
         createAndAddSeekBarListener(layout, "Navigation Bar Radius", getString(R.string.navBarRadiusDescription),
                 0, 100, "navBarRadius", (int) Configs.getFloat("navBarRadius", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.FloatSeekBarListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
 
         //Vibration intensity
         createAndAddSeekBarListener(layout, "Vibration Intensity", getString(R.string.vibrationIntensityDescription),
                 0, 100, "vib_amplitude", Configs.getInt("vib_amplitude", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.IntSeekerListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.IntegerSeekBarListener");
 
         //Vibration length
         createAndAddSeekBarListener(layout, "Vibration Length", getString(R.string.vibrationLengthDescription),
                 0, 500, "vib_duration", (int) Configs.getLong("vib_duration", 100),
-                "com.jrguo2.personalgesturenav.settings.utils.LongSeekBarListener");
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.LongSeekBarListener");
+
+        ColorPickerDialog.newBuilder()
+                .setDialogType(ColorPickerDialog.TYPE_CUSTOM)
+                .setAllowPresets(false)
+                .setDialogId(Configs.COLOR_PICKER_AREA)
+                .setColor(Color.BLACK)
+                .setShowAlphaSlider(true)
+                .show(getActivity());
     }
 
     private void createAndAddSeekBarListener(LinearLayout layout, String prefix, String description, int min, int max,
@@ -88,7 +105,7 @@ public class NavAreaSettings extends Fragment {
         try{
             Class<?> classNameInstance = Class.forName(className);
             Constructor<?> cons = classNameInstance.getConstructor(String.class);
-            SeekerListener seekerListener = (SeekerListener) cons.newInstance(keyValue);
+            SeekBarListener seekBarListener = (SeekBarListener) cons.newInstance(keyValue);
 
             ViewGroup.LayoutParams lp = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, // Width of TextView
@@ -101,15 +118,15 @@ public class NavAreaSettings extends Fragment {
             seekBar.setMax(max);
             seekBar.setProgress(currentValue);
             addDivider(layout, Util.dpToPixels(30));
-            seekBar.setOnSeekBarChangeListener(seekerListener);
+            seekBar.setOnSeekBarChangeListener(seekBarListener);
 
             DisplayMetrics displayMetrics = new DisplayMetrics();
             this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
             int width =  displayMetrics.widthPixels - seekBar.getPaddingLeft() - seekBar.getPaddingRight();
             int thumbPos = (int) (width * (1.0 * (seekBar.getProgress() - seekBar.getMin()) / (seekBar.getMax() - seekBar.getMin())));
-            seekerListener.getTextDrawable().setOffsets(thumbPos, 0);
-            seekBar.setThumb(seekerListener.getDrawableFromString(Integer.toString(currentValue)));
+            seekBarListener.getTextDrawable().setOffsets(thumbPos, 0);
+            seekBar.setThumb(seekBarListener.getDrawableFromString(Integer.toString(currentValue)));
         }
         catch(Exception e){
             Log.e("Settings UI", "Error setting up seekbar listeners.\n" + e.toString());

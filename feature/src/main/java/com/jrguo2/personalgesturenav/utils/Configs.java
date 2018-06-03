@@ -2,13 +2,15 @@ package com.jrguo2.personalgesturenav.utils;
 
 import android.content.SharedPreferences;
 
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 public class Configs {
 
     public static SharedPreferences SHARED_PREFERENCE;
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
-    public static OverlayService OVERLAY_SERVICE;
+    public static NavigationAreaService OVERLAY_SERVICE;
+    public static int COLOR_PICKER_PILL = 1;
+    public static int COLOR_PICKER_AREA = 2;
 
     public static String getString(String key, String def){
         if(SHARED_PREFERENCE == null){

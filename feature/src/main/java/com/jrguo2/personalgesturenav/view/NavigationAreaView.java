@@ -5,28 +5,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.View;
 
 import com.jrguo2.personalgesturenav.utils.Configs;
 
-public class AreaView extends View {
+public class NavigationAreaView extends View {
 
     private Paint paint;
     private boolean show;
-    private Color pillColor;
-    private Color outlineColor;
+    private int pillColor;
+    private int outlineColor;
     private float height;
     private float width;
     private float roundRadius;
 
-    public AreaView(Context context) {
+    public NavigationAreaView(Context context) {
         super(context);
 
         paint = new Paint();
         show = true;
-
-        pillColor = Color.valueOf(0f, 0f, 0f, 0.35f);
-        outlineColor = Color.valueOf(1f, 1f, 1f, .75f);
 
         updateParameters();
     }
@@ -35,6 +33,14 @@ public class AreaView extends View {
         width = Configs.getFloat("navBarWidth", 100f);
         height = Configs.getFloat("navBarHeight", 40f);
         roundRadius = Configs.getFloat("navBarRadius", 50f);
+
+        String color = Configs.getString("pillColor","#FFFFFF");
+
+        Log.i("Color", "test\t" + color);
+
+
+        pillColor = Color.parseColor(color);
+        outlineColor = Color.parseColor(Configs.getString("outlineColor","#FFFFFF"));
     }
 
     @Override
@@ -44,7 +50,7 @@ public class AreaView extends View {
 
         if (show) {
             paint.setStyle(Paint.Style.FILL);
-            paint.setColor(pillColor.toArgb());
+            paint.setColor(pillColor);
             canvas.drawRoundRect(0, 0, canvas.getWidth(), height, roundRadius, roundRadius, paint);
 
 //            paint.setStyle(Paint.Style.STROKE);

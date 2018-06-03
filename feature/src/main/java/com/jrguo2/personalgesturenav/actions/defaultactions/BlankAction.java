@@ -1,4 +1,6 @@
-package com.jrguo2.personalgesturenav.actions;
+package com.jrguo2.personalgesturenav.actions.defaultactions;
+
+import com.jrguo2.personalgesturenav.actions.Action;
 
 public class BlankAction extends Action {
 

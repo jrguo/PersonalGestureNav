@@ -1,22 +1,20 @@
 package com.jrguo2.personalgesturenav.gestures;
 
-import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import com.jrguo2.personalgesturenav.actions.ActionManager;
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 
-public class NavGestureListener {
+public class NavGestureHandler {
 
     public static float minXDelta, minYDelta;
     public static float minDuration;
-    private OverlayService accessibilityService;
+    private NavigationAreaService accessibilityService;
     private ActionManager actions;
 
-    public NavGestureListener(OverlayService service){
+    public NavGestureHandler(NavigationAreaService service){
         minXDelta = 100;
         minYDelta = 100;
         minDuration = 500f;

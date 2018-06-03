@@ -1,14 +1,12 @@
-package com.jrguo2.personalgesturenav.actions;
+package com.jrguo2.personalgesturenav.actions.defaultactions;
 
 import android.accessibilityservice.AccessibilityService;
-import android.content.Context;
-import android.os.Vibrator;
 
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 public class MostRecentAction extends AccessibilityAction {
 
-    public MostRecentAction(OverlayService service) {
+    public MostRecentAction(NavigationAreaService service) {
         super(service, AccessibilityService.GLOBAL_ACTION_RECENTS);
     }
 

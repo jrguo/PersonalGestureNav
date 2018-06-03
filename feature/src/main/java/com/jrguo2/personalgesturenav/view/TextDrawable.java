@@ -1,4 +1,4 @@
-package com.jrguo2.personalgesturenav.settings.utils;
+package com.jrguo2.personalgesturenav.view;
 
 import android.graphics.Canvas;
 import android.graphics.Color;

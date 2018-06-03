@@ -5,19 +5,19 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.jrguo2.personalgesturenav.gestures.GesturesTypes;
-import com.jrguo2.personalgesturenav.gestures.NavGestureListener;
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.gestures.NavGestureHandler;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
-public class TouchListener implements View.OnTouchListener {
+public class NavigationAreaTouchListener implements View.OnTouchListener {
 
     //Holds start positions for gestures
     private float prevX, prevY;
     private long timeBeforeFade;
     private long prevTime;
-    private NavGestureListener gestureHandler;
-    private OverlayService accessibilityService;
+    private NavGestureHandler gestureHandler;
+    private NavigationAreaService accessibilityService;
 
-    public TouchListener(OverlayService accessibilityService){
+    public NavigationAreaTouchListener(NavigationAreaService accessibilityService){
         prevX = 0f;
         prevY = 0f;
         prevTime = 0;
@@ -25,7 +25,7 @@ public class TouchListener implements View.OnTouchListener {
         timeBeforeFade = 1000l;
 
         this.accessibilityService = accessibilityService;
-        gestureHandler = new NavGestureListener(accessibilityService);
+        gestureHandler = new NavGestureHandler(accessibilityService);
     }
 
     @Override

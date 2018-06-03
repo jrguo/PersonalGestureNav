@@ -4,10 +4,13 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
 import com.jrguo2.personalgesturenav.feature.R;
+import com.jrguo2.personalgesturenav.utils.Configs;
 
-public class SettingsActivity extends AppCompatActivity {
+public class SettingsActivity extends AppCompatActivity implements ColorPickerDialogListener{
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -25,5 +28,21 @@ public class SettingsActivity extends AppCompatActivity {
 
         tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        Log.i("Color", Integer.toHexString(color));
+        if(dialogId == Configs.COLOR_PICKER_AREA){
+            Configs.setString("pillColor", "#" + Integer.toHexString(color));
+        }
+        if(dialogId == Configs.COLOR_PICKER_PILL){
+            Configs.setString("outlineColor","#" +  Integer.toHexString(color));
+        }
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+
     }
 }

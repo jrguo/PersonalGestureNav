@@ -1,12 +1,12 @@
-package com.jrguo2.personalgesturenav.actions;
+package com.jrguo2.personalgesturenav.actions.defaultactions;
 
 import android.accessibilityservice.AccessibilityService;
 import android.util.Log;
 
-import com.jrguo2.personalgesturenav.overlay.OverlayService;
+import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 public class MoveNavbar extends AccessibilityAction {
-    public MoveNavbar(OverlayService service) {
+    public MoveNavbar(NavigationAreaService service) {
         super(service, AccessibilityService.GLOBAL_ACTION_RECENTS);
     }
 

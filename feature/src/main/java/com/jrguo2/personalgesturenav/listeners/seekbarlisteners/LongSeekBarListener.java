@@ -1,21 +1,22 @@
-package com.jrguo2.personalgesturenav.settings.utils;
+package com.jrguo2.personalgesturenav.listeners.seekbarlisteners;
 
 import android.widget.SeekBar;
 
 import com.jrguo2.personalgesturenav.utils.Configs;
 
-public class FloatSeekBarListener extends SeekerListener {
+public class LongSeekBarListener extends SeekBarListener {
 
-    private float currValue;
+    private long currValue;
 
-    public FloatSeekBarListener(String keyValue) {
+    public LongSeekBarListener(String keyValue) {
         super(keyValue);
+
         currValue = 0;
     }
 
     @Override
     public void updateKeyValue() {
-        Configs.setFloat(this.getKeyValue(), currValue);
+        Configs.setLong(this.getKeyValue(), currValue);
     }
 
     @Override

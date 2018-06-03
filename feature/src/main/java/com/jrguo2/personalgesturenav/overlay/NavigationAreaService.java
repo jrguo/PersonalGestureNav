@@ -1,37 +1,26 @@
 package com.jrguo2.personalgesturenav.overlay;
 
 import android.accessibilityservice.AccessibilityService;
-import android.app.UiAutomation;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.PixelFormat;
-import android.graphics.Rect;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.provider.Settings;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.RelativeLayout;
 
 import com.jrguo2.personalgesturenav.feature.R;
-import com.jrguo2.personalgesturenav.listeners.TouchListener;
+import com.jrguo2.personalgesturenav.listeners.NavigationAreaTouchListener;
 import com.jrguo2.personalgesturenav.utils.Configs;
-import com.jrguo2.personalgesturenav.view.AreaView;
+import com.jrguo2.personalgesturenav.view.NavigationAreaView;
 
 import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class OverlayService extends AccessibilityService {
+public class NavigationAreaService extends AccessibilityService {
 
     private WindowManager windowsManager;
-    public AreaView testView;
+    public NavigationAreaView testView;
     public int xOffset;
     public int yOffset;
     public int areaWidth;
@@ -56,7 +45,7 @@ public class OverlayService extends AccessibilityService {
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Configs.SHARED_PREFERENCES_EDITOR = Configs.SHARED_PREFERENCE.edit();
 
-        //Configs.SHARED_PREFERENCES_EDITOR.clear().commit();
+        Configs.SHARED_PREFERENCES_EDITOR.clear().commit();
 
         createAndAddNavArea();
 
@@ -90,8 +79,8 @@ public class OverlayService extends AccessibilityService {
             windowsManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
 
         if(testView == null){
-            testView = new AreaView(this);
-            testView.setOnTouchListener(new TouchListener(this));
+            testView = new NavigationAreaView(this);
+            testView.setOnTouchListener(new NavigationAreaTouchListener(this));
         }
 
         ViewGroup.LayoutParams params = testView.getLayoutParams();
