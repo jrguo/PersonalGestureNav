@@ -2,6 +2,7 @@ package com.jrguo2.personalgesturenav.utils;
 
 import android.content.SharedPreferences;
 
+import com.jrguo2.personalgesturenav.actions.ActionManager;
 import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
 
 public class Configs {
@@ -9,6 +10,8 @@ public class Configs {
     public static SharedPreferences SHARED_PREFERENCE;
     public static SharedPreferences.Editor SHARED_PREFERENCES_EDITOR;
     public static NavigationAreaService OVERLAY_SERVICE;
+    public static ActionManager ACTION_MANAGER;
+
     public static int COLOR_PICKER_PILL = 1;
     public static int COLOR_PICKER_AREA = 2;
 

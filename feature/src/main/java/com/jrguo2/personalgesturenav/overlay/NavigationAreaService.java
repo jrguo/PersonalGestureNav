@@ -44,7 +44,7 @@ public class NavigationAreaService extends AccessibilityService {
                 getString(R.string.preference_file_key), Context.MODE_PRIVATE);
         Configs.SHARED_PREFERENCES_EDITOR = Configs.SHARED_PREFERENCE.edit();
 
-        Configs.SHARED_PREFERENCES_EDITOR.clear().commit();
+        //Configs.SHARED_PREFERENCES_EDITOR.clear().commit();
 
         createAndAddNavArea();
 
@@ -81,6 +81,8 @@ public class NavigationAreaService extends AccessibilityService {
         }
         else{
             long duration = Configs.getLong("timeBeforeFadeDuration", 1000);
+            float holdDuration = Configs.getFloat("minLongHoldDuration", 1000);
+            navigationAreaTouchListener.setMinHoldDuration(holdDuration);
             navigationAreaTouchListener.setTimeBeforeFade(duration);
         }
 

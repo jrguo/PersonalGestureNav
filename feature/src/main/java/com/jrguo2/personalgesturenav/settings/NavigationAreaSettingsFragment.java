@@ -106,8 +106,12 @@ public class NavigationAreaSettingsFragment extends Fragment {
         outlineColorPanel = createColorChanger(layout, "Navigation Area Secondary Color", getString(R.string.navAreaSecondaryColorDescription),
                 "outlineColor", Configs.COLOR_PICKER_PILL);
 
-        createSeekBarChanger(layout, "Navigation Bar Thickness", getString(R.string.timeDurationBeforeFadeDescription),
-                0, 10, "navBarOutlineThickness", (int) Configs.getLong("navBarOutlineThickness", 5),
+        createSeekBarChanger(layout, "Navigation Bar Thickness", getString(R.string.navBarOutlineThickness),
+                0, 10, "navBarOutlineThickness", (int) Configs.getFloat("navBarOutlineThickness", 5),
+                "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
+
+        createSeekBarChanger(layout, "Hold Duration", getString(R.string.actionMinHoldDurationDescription),
+                500, 5000, "minLongHoldDuration", (int) Configs.getFloat("minLongHoldDuration", 500),
                 "com.jrguo2.personalgesturenav.listeners.seekbarlisteners.FloatSeekBarListener");
     }
 
@@ -211,6 +215,5 @@ public class NavigationAreaSettingsFragment extends Fragment {
         View viewDivider = new View(getActivity().getApplicationContext());
         viewDivider.setLayoutParams(new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, height));
         layout.addView(viewDivider);
-
     }
 }

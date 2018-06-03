@@ -34,7 +34,7 @@ public class NavigationAreaView extends View {
         width = Configs.getFloat("navBarWidth", 100f);
         height = Configs.getFloat("navBarHeight", 40f);
         roundRadius = Configs.getFloat("navBarRadius", 50f);
-        outlineRadius = Configs.getFloat("navBarOutlineThickness", 50f);
+        outlineRadius = Configs.getFloat("navBarOutlineThickness", 1f);
         String color = Configs.getString("pillColor","#FFFFFF");
         pillColor = Color.parseColor(color);
         outlineColor = Color.parseColor(Configs.getString("outlineColor","#FFFFFF"));
@@ -50,11 +50,11 @@ public class NavigationAreaView extends View {
             paint.setColor(pillColor);
             canvas.drawRoundRect(0, 0, canvas.getWidth(), height, roundRadius, roundRadius, paint);
 
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setStrokeWidth(outlineRadius);
-            paint.setColor(outlineColor);
-            float half = outlineRadius /2;
-            canvas.drawRoundRect( half, half, canvas.getWidth() - half, height - half, roundRadius, roundRadius, paint);
+//            paint.setStyle(Paint.Style.STROKE);
+//            paint.setStrokeWidth(outlineRadius);
+//            paint.setColor(outlineColor);
+//            float half = outlineRadius /2;
+            //canvas.drawRoundRect( half, half, canvas.getWidth() - half, height - half, roundRadius, roundRadius, paint);
         }
     }
 

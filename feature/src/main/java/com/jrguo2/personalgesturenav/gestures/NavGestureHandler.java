@@ -5,6 +5,7 @@ import android.view.View;
 
 import com.jrguo2.personalgesturenav.actions.ActionManager;
 import com.jrguo2.personalgesturenav.overlay.NavigationAreaService;
+import com.jrguo2.personalgesturenav.utils.Configs;
 
 
 public class NavGestureHandler {
@@ -15,15 +16,16 @@ public class NavGestureHandler {
     private ActionManager actions;
 
     public NavGestureHandler(NavigationAreaService service){
-        minXDelta = 100;
-        minYDelta = 100;
-        minDuration = 500f;
+        minXDelta = Configs.getFloat("minXPosMov", 100);
+        minYDelta = Configs.getFloat("minYPosMov", 35);
+        minDuration = Configs.getFloat("minLongHoldDuration", 500);
 
         this.accessibilityService = service;
 
         //Setup default actions
         actions = new ActionManager();
-        actions.populateActionMapWithDefaults(accessibilityService);
+        actions.createStringToActionMap(accessibilityService);
+        actions.populateActionMapWithDefaults();
     }
 
     public GesturesTypes getGestureType(float deltaX, float deltaY, float duration){

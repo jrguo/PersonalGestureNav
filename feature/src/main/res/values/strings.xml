@@ -21,4 +21,6 @@
         This is in ms and is used to prevent screen burn in.</string>
     <string name="navAreaPrimaryColorDescription">This determines the primary color of the navigation bar.</string>
     <string name="navAreaSecondaryColorDescription">This determines the outline color of the navigation bar.</string>
+    <string name="navBarOutlineThickness">This controls how thick the border around the navigation bar is.</string>
+    <string name="actionMinHoldDurationDescription">Controls how long to wait before checking for hold gesture.</string>
 </resources>
